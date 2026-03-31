@@ -1,0 +1,91 @@
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 15px;
+  background-color: var(--color-text);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+              height 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+              background-color 0.4s ease;
+  will-change: transform, width, height;
+}
+
+.custom-cursor.expand {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(2px);
+  mix-blend-mode: normal;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.custom-cursor.has-text {
+  width: 150px;
+  height: 150px;
+  background-color: var(--color-text);
+  mix-blend-mode: difference;
+  border: none;
+  backdrop-filter: none;
+}
+
+.cursor-text {
+  color: var(--color-bg);
+  font-family: var(--font-primary);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0;
+  animation: fadeTextIn 0.3s forwards 0.1s;
+}
+
+@keyframes fadeTextIn {
+  to { opacity: 1; }
+}
+
+/* Removed media (pointer: coarse) to allow touch device rendering */
+
+/* -----------------------------
+   DYNAMIC SECTION THEMES
+----------------------------- */
+.custom-cursor.theme-projects {
+  background-color: #ff6b35;
+  mix-blend-mode: normal;
+}
+
+.custom-cursor.theme-education {
+  background-color: #00e5a0;
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Creative Diamond Shape */
+  width: 18px;
+  height: 18px;
+  mix-blend-mode: normal;
+}
+
+.custom-cursor.theme-skills {
+  background-color: #7c4dff;
+  border-radius: 4px; /* Hard edged box */
+  width: 16px;
+  height: 16px;
+}
+
+.custom-cursor.theme-experience {
+  background-color: transparent;
+  border: 2px solid var(--color-text);
+  width: 25px;
+  height: 25px;
+}
+
+.custom-cursor.theme-contact {
+  background-color: #ff3366;
+  mix-blend-mode: normal;
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.8);
+}

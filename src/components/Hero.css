@@ -1,0 +1,376 @@
+.hero-section {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible; /* Fixes buttons getting cropped vertically */
+  overflow-x: hidden;
+  padding: 0 5vw;
+  background-color: var(--color-bg);
+  cursor: none;
+}
+
+.mobile-terminal-feed {
+  display: none;
+}
+
+/* -----------------------------
+   ATTENTION TEXT (Desktop + Mobile)
+----------------------------- */
+.hero-attention-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+  z-index: 20;
+}
+
+.attention-txt {
+  font-family: var(--font-primary, sans-serif);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #050505;
+  background-color: #00e5a0;
+  padding: 0.5rem 1.5rem;
+  display: inline-block;
+  letter-spacing: 0.05em;
+  border: 1px solid #00e5a0;
+  animation: brutalist-snap 4s infinite;
+}
+
+.diff-typo {
+  font-family: "Playfair Display", "Times New Roman", Times, serif;
+  font-style: italic;
+  font-weight: normal;
+  color: #ff6b35;
+  background-color: transparent;
+  padding: 0 0.2rem;
+  margin: 0;
+  text-transform: lowercase;
+  border-radius: 0;
+}
+
+@keyframes brutalist-snap {
+  0%, 85% { 
+    box-shadow: -6px 6px 0px #ff6b35; 
+    transform: translate(6px, -6px); 
+  }
+  90%, 100% { 
+    box-shadow: 0px 0px 0px #ff6b35; 
+    transform: translate(0px, 0px); 
+  }
+}
+
+/* -----------------------------
+   THE LOADER
+----------------------------- */
+.hero-loader {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-bg);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform-origin: top;
+}
+
+.loader-counter {
+  font-family: var(--font-code);
+  font-size: clamp(4rem, 15vw, 15rem);
+  color: var(--color-text);
+  font-weight: 700;
+  mix-blend-mode: difference;
+}
+
+
+
+/* -----------------------------
+   DA VINCI / BLUEPRINT ANNOTATIONS
+----------------------------- */
+.anno {
+  position: absolute;
+  font-family: var(--font-code);
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  letter-spacing: 0.15em;
+  color: var(--color-muted);
+  opacity: 0.7;
+}
+
+/* Strategic empty-space placement */
+.anno-tl { top: 12%; left: 10%; }
+.anno-tr { top: 20%; right: 10%; text-align: right; }
+.anno-bl { bottom: 20%; left: 15%; }
+.anno-br { bottom: 12%; right: 5%; text-align: right; }
+
+@media (max-width: 768px) {
+  .anno-tl { top: 8%; left: 5%; }
+  .anno-tr { top: 8%; right: 5%; }
+  .anno-bl { bottom: 8%; left: 5%; }
+  .anno-br { bottom: 8%; right: 5%; }
+}
+
+/* -----------------------------
+   VERTICAL AXIS TYPOGRAPHY
+----------------------------- */
+.hero-vert-axis {
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: left center;
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: var(--color-text);
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .hero-vert-axis {
+    left: -2rem; /* Push slightly off screen */
+    font-size: 3.5rem; /* Massive scale up for phones */
+    letter-spacing: 0.1rem;
+    color: rgba(255, 255, 255, 0.04); /* Ghostly watermark effect */
+    z-index: 0;
+    pointer-events: none;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* -----------------------------
+   MAIN HORIZONTAL TYPOGRAPHY
+----------------------------- */
+.hero-typography {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.mask-wrapper {
+  overflow: hidden;
+  perspective: 800px;
+}
+
+.hero-typography h1 {
+  font-family: var(--font-alien);
+  font-size: clamp(5rem, 18vw, 20rem);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: var(--color-text);
+  margin: 0;
+  white-space: nowrap;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hero-typography h1 {
+    white-space: normal;
+    word-break: break-all;
+    line-height: 0.75;
+    animation: mobile-glitch-reveal 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  @keyframes mobile-glitch-reveal {
+    0% { transform: scale(1.5) skewX(20deg); filter: blur(10px); opacity: 0; }
+    40% { transform: scale(0.9) skewX(-10deg); filter: blur(2px); opacity: 1; }
+    60% { transform: scale(1.05) skewX(5deg); filter: blur(0px); }
+    100% { transform: scale(1) skewX(0); filter: blur(0px); opacity: 1; }
+  }
+}
+
+.name-offset-right {
+  text-align: right;
+  transform-origin: bottom center;
+}
+
+.name-offset-left {
+  text-align: left;
+  transform-origin: top center;
+  margin-left: -2vw;
+}
+
+@media (max-width: 768px) {
+  .name-offset-right { text-align: center; }
+  .name-offset-left { text-align: center; margin-left: 0; }
+}
+
+/* -----------------------------
+   ACTION / CV BUTTON BLOCK
+----------------------------- */
+.hero-action-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: clamp(2rem, 5vh, 6rem);
+  padding-right: 5vw;
+}
+
+.desk-only {
+  display: block;
+}
+
+.action-tag {
+  font-family: var(--font-code);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: #ff6b35; /* Neon accent */
+  margin-bottom: 0.5rem;
+}
+
+.hero-cv-btn {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  
+  /* Highly visible, glossy liquid venom aesthetic (Midnight/Abyss color scheme) */
+  background: linear-gradient(135deg, #111111, #1a1a2e, #16213e);
+  background-size: 200% 200%;
+  
+  box-shadow: inset 10px 10px 20px rgba(139, 92, 246, 0.25), 
+              inset -10px -10px 20px rgba(0, 229, 160, 0.2),
+              0 15px 35px rgba(0, 0, 0, 0.9),
+              0 0 15px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Strong rim light so it's not invisible */
+  
+  /* Fixed 1:1 aspect ratio prevents squeezed PC rectangle */
+  width: 140px;
+  height: 140px;
+  
+  /* The liquid shape animation + gradient shift */
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  animation: liquidVenom 5s ease-in-out infinite alternate, sheenFlow 6s linear infinite;
+  
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.2;
+}
+
+@keyframes sheenFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes liquidVenom {
+  0% { 
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: rotate(0deg);
+  }
+  33% { 
+    border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+  }
+  66% { 
+    border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
+  }
+  100% { 
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: rotate(10deg);
+  }
+}
+
+.hero-cv-btn:hover {
+  transform: scale(1.08);
+  box-shadow: inset 10px 10px 30px rgba(139, 92, 246, 0.4), 
+              inset -10px -10px 30px rgba(0, 229, 160, 0.3),
+              0 20px 40px rgba(0, 0, 0, 0.9),
+              0 0 25px rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .hero-action-block {
+    align-items: center;
+    padding-right: 0;
+    margin-top: 1.5rem;
+  }
+  .hero-cv-btn {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    font-size: 0.75rem;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* Reapply venom animation */
+    animation: liquidVenom 5s ease-in-out infinite alternate, sheenFlow 6s linear infinite;
+  }
+  .action-tag {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-attention-text {
+    margin-bottom: 2rem;
+    padding: 0 5vw;
+  }
+  
+  .attention-txt {
+    font-family: var(--font-primary, sans-serif);
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+    font-weight: 900;
+    background-color: transparent;
+    color: #ff6b35; /* Loud neon orange text instead of a box */
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-align: center;
+    animation: none; /* Remove brutalist snap for a cleaner look */
+  }
+  
+  .diff-typo {
+    font-family: "Playfair Display", "Times New Roman", Times, serif;
+    font-style: italic;
+    color: #00e5a0;
+    font-weight: normal;
+    -webkit-text-stroke: 0;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    text-transform: lowercase;
+  }
+
+  /* Terminal Feed At Bottom */
+  .mobile-terminal-feed {
+    font-family: var(--font-code);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: #00e5a0;
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0.8;
+  }
+  
+  .mobile-terminal-feed p {
+    margin: 0;
+  }
+  
+  .terminal-blink {
+    animation: blink-caret 1s steps(2, start) infinite;
+    color: #fff;
+  }
+
+  @keyframes blink-caret {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+}

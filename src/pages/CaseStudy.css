@@ -1,0 +1,42 @@
+.case-study-page {
+  padding: 10vw 5vw;
+  min-height: 100vh;
+}
+
+.cs-header {
+  margin-bottom: 5vw;
+}
+
+.cs-back-btn {
+  display: inline-block;
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  color: var(--muted-text);
+  text-decoration: none;
+  margin-bottom: 2vw;
+  transition: color 0.3s ease;
+}
+
+.cs-back-btn:hover {
+  color: var(--accent-color);
+}
+
+.cs-title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.9;
+  color: var(--text-color);
+}
+
+.cs-content {
+  border-top: 1px solid var(--border);
+  padding-top: 5vw;
+}
+
+.cs-meta p {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  max-width: 800px;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  line-height: 1.6;
+}

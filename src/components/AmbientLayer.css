@@ -1,0 +1,17 @@
+.ambient-layer-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Let clicks pass through */
+  z-index: 0; /* Render behind everything */
+  opacity: 0;
+  animation: fadeInAmbient 3s ease-in forwards;
+}
+
+@keyframes fadeInAmbient {
+  to {
+    opacity: 1;
+  }
+}

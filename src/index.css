@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Syncopate:wght@400;700&display=swap');
+
+:root {
+  --color-bg: #030303;
+  --color-text: #F2F0EB;
+  --color-muted: #7E7C77;
+
+  --font-primary: 'Space Grotesk', sans-serif;
+  --font-display: 'Syncopate', sans-serif;
+  --font-alien: 'Syne', sans-serif;
+  --font-elegant: 'Cinzel Decorative', serif;
+  --font-code: 'Major Mono Display', monospace;
+  --font-serif: 'Baskervville', serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: none; /* We will use a custom cursor */
+}
+
+/* Base resets */
+html, body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Custom Cursor styling */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-text);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%); /* Centered on virtual tip */
+  transition: width 0.3s ease, height 0.3s ease;
+  will-change: transform, width, height;
+}
+
+.custom-cursor.hovering {
+  width: 80px;
+  height: 80px;
+}
+
+/* =============================================
+   SCROLL REVEAL ANIMATION UTILITIES
+   ============================================= */
+
+/* Base hidden state — elements start here */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.reveal.from-left {
+  transform: translateX(-40px);
+}
+
+.reveal.from-right {
+  transform: translateX(40px);
+}
+
+.reveal.scale-in {
+  transform: scale(0.94);
+}
+
+/* 1. Cinematic Blur Reveal */
+.reveal-blur {
+  opacity: 0;
+  filter: blur(15px);
+  transform: scale(1.05);
+  transition: opacity 1s ease-out, filter 1s ease-out, transform 1s ease-out;
+}
+.reveal-blur.is-visible {
+  opacity: 1;
+  filter: blur(0px);
+  transform: scale(1);
+}
+
+/* 2. 3D Rotate Drop-in */
+.reveal-rotate {
+  opacity: 0;
+  transform: perspective(600px) rotateX(45deg) translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-origin: top;
+}
+.reveal-rotate.is-visible {
+  opacity: 1;
+  transform: perspective(600px) rotateX(0deg) translateY(0);
+}
+
+/* 3. Alien Stretch Reveal */
+.reveal-stretch {
+  opacity: 0;
+  transform: scaleY(2);
+  letter-spacing: -0.2em;
+  transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), letter-spacing 0.8s ease-out;
+}
+.reveal-stretch.is-visible {
+  opacity: 1;
+  transform: scaleY(1);
+  letter-spacing: normal;
+}
+
+/* 4. Cubed Scrolling (3D Box Roll) */
+.reveal-cubic {
+  opacity: 0;
+  transform: perspective(1000px) rotateX(90deg) translateZ(-100px);
+  transform-origin: top center;
+  transition: opacity 1s ease-out, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.reveal-cubic.is-visible {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(0deg) translateZ(0);
+}
+
+/* 5. 70-Degree Diagonal Swipe */
+.reveal-70deg {
+  opacity: 0;
+  transform: translate(-10vw, 15vh) rotate(-5deg);
+  transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.reveal-70deg.is-visible {
+  opacity: 1;
+  transform: translate(0, 0) rotate(0deg);
+}
+
+/* 6. 40-Degree Reverse Swipe */
+.reveal-40deg {
+  opacity: 0;
+  transform: translate(10vw, 15vh) scale(0.9) rotate(5deg);
+  transition: opacity 1s cubic-bezier(0.33, 1, 0.68, 1), transform 1s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.reveal-40deg.is-visible {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) rotate(0deg);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+/* Staggered children — each child delays slightly */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.stagger-children.is-visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.05s; }
+.stagger-children.is-visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.15s; }
+.stagger-children.is-visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.25s; }
+.stagger-children.is-visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.35s; }
+.stagger-children.is-visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.45s; }
+.stagger-children.is-visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.55s; }
+
+/* Clip-path text reveal for headings */
+.clip-reveal {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.9s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.clip-reveal.is-visible {
+  clip-path: inset(0 0 0% 0);
+}
+
+/* Clip-path diagonal sweep */
+.clip-diagonal {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition: clip-path 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+.clip-diagonal.is-visible {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Floating ambient glow element */
+@keyframes float-glow {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+  50% { transform: translateY(-20px) scale(1.05); opacity: 0.5; }
+}
+
+/* Line draw animation */
+@keyframes draw-line {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+/* Pulse ring for contact section */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(242, 240, 235, 0.15); }
+  70% { box-shadow: 0 0 0 20px rgba(242, 240, 235, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(242, 240, 235, 0); }
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}

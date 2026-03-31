@@ -1,0 +1,18 @@
+.cursor-bunny-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5; /* Behind text (usually 10) */
+  pointer-events: none;
+  mix-blend-mode: normal;
+  will-change: transform;
+  width: 120px;
+  height: 120px;
+}
+
+@media (max-width: 768px) {
+  .cursor-bunny-wrapper {
+    width: 200px;
+    height: 200px;
+  }
+}

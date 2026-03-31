@@ -1,0 +1,87 @@
+.gallery-section {
+  background-color: #080808;
+  border-top: 1px solid #1f1f1f;
+  padding: 6vh 0 8vh;
+}
+
+.gallery-label {
+  padding: 0 5vw 3rem;
+}
+
+/* The scroll container — horizontal, CSS snap */
+.gallery-scroll-area {
+  display: flex;
+  gap: 2vw;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 5vw;
+  cursor: grab;
+
+  /* Hide scrollbar but keep scrollability */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gallery-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-scroll-area:active {
+  cursor: grabbing;
+}
+
+.gallery-slide {
+  flex-shrink: 0;
+  width: clamp(240px, 35vw, 500px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.gallery-img-wrap {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: #111;
+}
+
+.gallery-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.gallery-slide:hover .gallery-img-wrap img {
+  transform: scale(1.04);
+}
+
+.gallery-slide-meta h3 {
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.gallery-slide-meta p {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 0.3rem;
+}
+
+/* Mobile touch active feedback */
+@media (hover: none) {
+  .gallery-slide:active .gallery-img-wrap {
+    transform: scale(0.97);
+    transition: transform 0.2s ease;
+  }
+  .gallery-slide:active .gallery-img-wrap img {
+    transform: scale(1.04);
+  }
+}
+
