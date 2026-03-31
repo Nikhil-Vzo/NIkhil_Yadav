@@ -23,7 +23,12 @@ const Hero = () => {
     let currentProgress = 0;
     let loadingInterval;
 
+    let hasRevealed = false;
+
     const runReveal = () => {
+      if (hasRevealed) return;
+      hasRevealed = true;
+
       // Hide loader and trigger Hero enter sequence
       gsap.to(counterRef.current, { y: -50, opacity: 0, duration: 0.5, delay: 0.2 });
       gsap.to(loaderRef.current, { 
@@ -52,7 +57,7 @@ const Hero = () => {
     };
 
     const tryFinishLoad = () => {
-      if (isBunnyLoaded && isWindowLoaded && currentProgress >= 99) {
+      if (!hasRevealed && isBunnyLoaded && isWindowLoaded && currentProgress >= 99) {
         clearInterval(loadingInterval);
         setProgress(100);
         runReveal();
