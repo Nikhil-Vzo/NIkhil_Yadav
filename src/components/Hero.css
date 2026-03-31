@@ -309,6 +309,10 @@
     border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* Reapply venom animation */
     animation: liquidVenom 5s ease-in-out infinite alternate, sheenFlow 6s linear infinite;
   }
+  .desk-only {
+    display: none;
+  }
+  
   .action-tag {
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
