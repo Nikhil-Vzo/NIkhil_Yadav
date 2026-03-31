@@ -5,10 +5,12 @@ import './Hero.css';
 
 const Hero = () => {
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
 
   const loaderRef = useRef(null);
-  const counterRef = useRef(null);
+  const lampRef = useRef(null);
+  const targetIRef = useRef(null);
+  const charsRef = useRef([]);
+
   const nameTopRef = useRef(null);
   const nameBottomRef = useRef(null);
   const parallaxTopRef = useRef(null);
@@ -20,17 +22,40 @@ const Hero = () => {
   useEffect(() => {
     let isBunnyLoaded = false;
     let isWindowLoaded = document.readyState === 'complete';
-    let currentProgress = 0;
-    let loadingInterval;
-
     let hasRevealed = false;
+    let sequenceFinished = false;
+
+    // The entire Pixar sequence is entirely CSS/GSAP (0 React re-renders = perfectly smooth on mobile)
+    const pixarTl = gsap.timeline({
+      onComplete: () => {
+        sequenceFinished = true;
+        tryFinishLoad();
+      }
+    });
+
+    // 1. Lamp drops in and hops
+    pixarTl.fromTo(lampRef.current, { x: '-20vw', y: '-50vh', rotation: -45 }, { x: '-10vw', y: 0, rotation: 0, ease: 'bounce.out', duration: 0.8 })
+      // Hop 1 (N)
+      .to(lampRef.current, { x: '-5vw', y: '-15vh', ease: 'power2.out', duration: 0.3 })
+      .to(lampRef.current, { x: '-2vw', y: 0, ease: 'power2.in', duration: 0.25 })
+      // Hop 2 (I)
+      .to(lampRef.current, { x: '2vw', y: '-15vh', ease: 'power2.out', duration: 0.3 })
+      .to(lampRef.current, { x: '5vw', y: 0, ease: 'power2.in', duration: 0.25 })
+      // The Big Jump
+      .to(lampRef.current, { x: '7vw', y: '-25vh', rotation: 180, ease: 'power3.out', duration: 0.5 })
+      // SQUASH the I!
+      .to(lampRef.current, { x: '9vw', y: '0vh', rotation: 360, ease: 'power4.in', duration: 0.35 })
+      .add('squash') // label for simultaneous actions
+      .to(targetIRef.current, { scaleY: 0.1, transformOrigin: 'bottom', ease: 'elastic.out(1, 0.3)', duration: 0.8 }, 'squash')
+      .to(lampRef.current, { scaleY: 0.6, scaleX: 1.3, transformOrigin: 'bottom', y: '2vh', duration: 0.15 }, 'squash')
+      .to(lampRef.current, { scaleY: 1, scaleX: 1, y: 0, ease: 'elastic.out(1, 0.5)', duration: 0.6 });
 
     const runReveal = () => {
       if (hasRevealed) return;
       hasRevealed = true;
 
-      // Hide loader and trigger Hero enter sequence
-      gsap.to(counterRef.current, { y: -50, opacity: 0, duration: 0.5, delay: 0.2 });
+      // Hide loader explosively
+      gsap.to('.pixar-loader-content', { scale: 1.5, opacity: 0, duration: 0.6, ease: 'power3.in' });
       gsap.to(loaderRef.current, { 
         height: 0, 
         duration: 1.2, 
@@ -40,39 +65,25 @@ const Hero = () => {
       });
 
       // Enter Hero typography sequence
-      const tl = gsap.timeline({ delay: 1.2 });
+      const tl = gsap.timeline({ delay: 1.0 });
       if (window.innerWidth >= 768) {
         tl.fromTo(vertAxisRef.current, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 1, ease: 'power3.out' })
           .fromTo(nameTopRef.current, { y: 150, opacity: 0, rotateX: -30 }, { y: 0, opacity: 1, rotateX: 0, duration: 1.2, ease: 'power4.out' }, "-=0.8")
           .fromTo(nameBottomRef.current, { y: 150, opacity: 0, rotateX: -30 }, { y: 0, opacity: 1, rotateX: 0, duration: 1.2, ease: 'power4.out' }, "-=1");
       } else {
-        // Mobile uses pure CSS keyframes for h1, just ensure opacity
         tl.set([vertAxisRef.current, nameTopRef.current, nameBottomRef.current], { opacity: 1 });
       }
       
-      // Animations for annotations and buttons
       const allExtras = document.querySelectorAll('.mobile-extra-anim');
       tl.fromTo(annotationsRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1, stagger: 0.1 }, "-=0.5")
         .fromTo([cvBtnRef.current, ...allExtras], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'back.out(1.5)', stagger: 0.1 }, "-=0.8");
     };
 
     const tryFinishLoad = () => {
-      if (!hasRevealed && isBunnyLoaded && isWindowLoaded && currentProgress >= 99) {
-        clearInterval(loadingInterval);
-        setProgress(100);
+      if (!hasRevealed && isBunnyLoaded && isWindowLoaded && sequenceFinished) {
         runReveal();
       }
     };
-
-    // Ticker that speeds up to 99 then waits for actual resources
-    loadingInterval = setInterval(() => {
-      if (currentProgress < 99) {
-        currentProgress += Math.floor(Math.random() * 15) + 5;
-        if (currentProgress > 99) currentProgress = 99;
-        setProgress(currentProgress);
-        tryFinishLoad();
-      }
-    }, 40); // slightly faster ticker for flair
 
     const handleWindowLoad = () => { isWindowLoaded = true; tryFinishLoad(); };
     const handleBunnyLoad = () => { isBunnyLoaded = true; tryFinishLoad(); };
@@ -80,18 +91,17 @@ const Hero = () => {
     window.addEventListener('load', handleWindowLoad);
     window.addEventListener('bunnyLoaded', handleBunnyLoad);
 
-    // Fallback in case Bunny or Window fails to fire load event
     const fallbackTimeout = setTimeout(() => {
       isWindowLoaded = true;
       isBunnyLoaded = true;
       tryFinishLoad();
-    }, 4000);
+    }, 4500);
 
     return () => {
-      clearInterval(loadingInterval);
       clearTimeout(fallbackTimeout);
       window.removeEventListener('load', handleWindowLoad);
       window.removeEventListener('bunnyLoaded', handleBunnyLoad);
+      pixarTl.kill();
     };
   }, []);
 
@@ -144,8 +154,23 @@ const Hero = () => {
         ref={loaderRef}
         style={{ pointerEvents: loading ? 'auto' : 'none' }}
       >
-        <div className="loader-counter" ref={counterRef}>
-          {progress.toString().padStart(3, '0')}
+        <div className="pixar-loader-content">
+          <div className="loader-lamp" ref={lampRef}></div>
+          <div className="pixar-word">
+            <span className="p-char" ref={el => charsRef.current[0] = el}>N</span>
+            <span className="p-char" ref={el => charsRef.current[1] = el}>I</span>
+            <span className="p-char" ref={el => charsRef.current[2] = el}>K</span>
+            <span className="p-char" ref={el => charsRef.current[3] = el}>H</span>
+            <span className="p-char" ref={targetIRef}>I</span>
+            <span className="p-char" ref={el => charsRef.current[4] = el}>L</span>
+          </div>
+          <div className="pixar-word">
+            <span className="p-char">Y</span>
+            <span className="p-char">A</span>
+            <span className="p-char">D</span>
+            <span className="p-char">A</span>
+            <span className="p-char">V</span>
+          </div>
         </div>
       </div>
 
