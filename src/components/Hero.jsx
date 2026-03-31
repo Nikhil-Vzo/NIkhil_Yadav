@@ -33,22 +33,26 @@ const Hero = () => {
       }
     });
 
+    // To guarantee the lamp always lands perfectly on the 'I' regardless of screen size,
+    // we wrapped the Lamp and the 'I' in the same DOM container. The Lamp's 0,0 position is perfectly above the 'I'.
+    // We animate from negative X values to perfectly hit 0.
+    
     // 1. Lamp drops in and hops
-    pixarTl.fromTo(lampRef.current, { x: '-20vw', y: '-50vh', rotation: -45 }, { x: '-10vw', y: 0, rotation: 0, ease: 'bounce.out', duration: 0.8 })
-      // Hop 1 (N)
-      .to(lampRef.current, { x: '-5vw', y: '-15vh', ease: 'power2.out', duration: 0.3 })
-      .to(lampRef.current, { x: '-2vw', y: 0, ease: 'power2.in', duration: 0.25 })
-      // Hop 2 (I)
-      .to(lampRef.current, { x: '2vw', y: '-15vh', ease: 'power2.out', duration: 0.3 })
-      .to(lampRef.current, { x: '5vw', y: 0, ease: 'power2.in', duration: 0.25 })
+    pixarTl.fromTo(lampRef.current, { xPercent: -500, yPercent: -300, rotation: -20 }, { xPercent: -350, yPercent: 0, rotation: 10, ease: 'bounce.out', duration: 0.8 })
+      // Hop 1
+      .to(lampRef.current, { xPercent: -250, yPercent: -100, ease: 'power2.out', duration: 0.3 })
+      .to(lampRef.current, { xPercent: -150, yPercent: 0, rotation: -10, ease: 'power2.in', duration: 0.25 })
+      // Hop 2
+      .to(lampRef.current, { xPercent: -80, yPercent: -150, ease: 'power2.out', duration: 0.3 })
+      .to(lampRef.current, { xPercent: -30, yPercent: 0, rotation: 5, ease: 'power2.in', duration: 0.25 })
       // The Big Jump
-      .to(lampRef.current, { x: '7vw', y: '-25vh', rotation: 180, ease: 'power3.out', duration: 0.5 })
+      .to(lampRef.current, { xPercent: -10, yPercent: -250, rotation: 40, ease: 'power3.out', duration: 0.5 })
       // SQUASH the I!
-      .to(lampRef.current, { x: '9vw', y: '0vh', rotation: 360, ease: 'power4.in', duration: 0.35 })
+      .to(lampRef.current, { xPercent: 0, yPercent: 0, rotation: 0, ease: 'power4.in', duration: 0.35 })
       .add('squash') // label for simultaneous actions
-      .to(targetIRef.current, { scaleY: 0.1, transformOrigin: 'bottom', ease: 'elastic.out(1, 0.3)', duration: 0.8 }, 'squash')
-      .to(lampRef.current, { scaleY: 0.6, scaleX: 1.3, transformOrigin: 'bottom', y: '2vh', duration: 0.15 }, 'squash')
-      .to(lampRef.current, { scaleY: 1, scaleX: 1, y: 0, ease: 'elastic.out(1, 0.5)', duration: 0.6 });
+      .to(targetIRef.current, { scaleY: 0.15, transformOrigin: 'bottom', ease: 'elastic.out(1, 0.3)', duration: 0.8 }, 'squash')
+      .to(lampRef.current, { scaleY: 0.5, scaleX: 1.2, transformOrigin: 'bottom', yPercent: 50, duration: 0.15 }, 'squash')
+      .to(lampRef.current, { scaleY: 1, scaleX: 1, yPercent: 0, ease: 'elastic.out(1, 0.5)', duration: 0.6 });
 
     const runReveal = () => {
       if (hasRevealed) return;
@@ -161,7 +165,17 @@ const Hero = () => {
             <span className="p-char" ref={el => charsRef.current[1] = el}>I</span>
             <span className="p-char" ref={el => charsRef.current[2] = el}>K</span>
             <span className="p-char" ref={el => charsRef.current[3] = el}>H</span>
-            <span className="p-char" ref={targetIRef}>I</span>
+            <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+              <div className="loader-lamp" ref={lampRef}>
+                {/* SVG classic articulated desk lamp */}
+                <svg viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
+                  <path d="M7 21h10v2H7z" />
+                  <path d="M11 21v-5l-3-6-3-2 1-2 2-1 4 3 2 6v7h-2z" />
+                  <path d="M12 9A4 4 0 1 0 7 2l2 2a2 2 0 1 1 3 3l-1 1z" />
+                </svg>
+              </div>
+              <span className="p-char target-i" ref={targetIRef}>I</span>
+            </div>
             <span className="p-char" ref={el => charsRef.current[4] = el}>L</span>
           </div>
           <div className="pixar-word">
