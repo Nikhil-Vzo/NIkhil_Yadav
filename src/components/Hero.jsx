@@ -11,6 +11,8 @@ const Hero = () => {
   const counterRef = useRef(null);
   const nameTopRef = useRef(null);
   const nameBottomRef = useRef(null);
+  const parallaxTopRef = useRef(null);
+  const parallaxBottomRef = useRef(null);
   const vertAxisRef = useRef(null);
   const cvBtnRef = useRef(null);
   const annotationsRef = useRef([]);
@@ -90,13 +92,13 @@ const Hero = () => {
 
   // Parallax Text Effect
   useEffect(() => {
-    if (!nameTopRef.current || !nameBottomRef.current) return;
+    if (!parallaxTopRef.current || !parallaxBottomRef.current) return;
 
-    const xToTop = gsap.quickTo(nameTopRef.current, 'x', { duration: 1, ease: 'power3.out' });
-    const yToTop = gsap.quickTo(nameTopRef.current, 'y', { duration: 1, ease: 'power3.out' });
+    const xToTop = gsap.quickTo(parallaxTopRef.current, 'x', { duration: 1, ease: 'power3.out' });
+    const yToTop = gsap.quickTo(parallaxTopRef.current, 'y', { duration: 1, ease: 'power3.out' });
     
-    const xToBottom = gsap.quickTo(nameBottomRef.current, 'x', { duration: 1.2, ease: 'power3.out' });
-    const yToBottom = gsap.quickTo(nameBottomRef.current, 'y', { duration: 1.2, ease: 'power3.out' });
+    const xToBottom = gsap.quickTo(parallaxBottomRef.current, 'x', { duration: 1.2, ease: 'power3.out' });
+    const yToBottom = gsap.quickTo(parallaxBottomRef.current, 'y', { duration: 1.2, ease: 'power3.out' });
 
     const handleMouseMove = (e) => {
       let clientX = e.clientX;
@@ -159,11 +161,15 @@ const Hero = () => {
             </p>
           </div>
 
-          <div className="mask-wrapper">
-            <h1 ref={nameTopRef} className="name-offset-right">NIKHIL</h1>
+          <div className="parallax-inner" ref={parallaxTopRef}>
+            <div className="mask-wrapper">
+              <h1 ref={nameTopRef} className="name-offset-right">NIKHIL</h1>
+            </div>
           </div>
-          <div className="mask-wrapper">
-            <h1 ref={nameBottomRef} className="name-offset-left">YADAV</h1>
+          <div className="parallax-inner" ref={parallaxBottomRef}>
+            <div className="mask-wrapper">
+              <h1 ref={nameBottomRef} className="name-offset-left">YADAV</h1>
+            </div>
           </div>
           
           <div className="hero-action-block" ref={cvBtnRef}>
