@@ -93,3 +93,40 @@
 @media (max-width: 768px) {
   .about-inner { grid-template-columns: 1fr; }
 }
+
+/* -----------------------------
+   GSAP REVEAL ANIMATION CLASSES
+----------------------------- */
+
+/* Heading slide-up masks */
+.mask-box {
+  display: block;
+  overflow: hidden;
+  line-height: 1.1;
+  padding-bottom: 0.1em;
+}
+
+.mask-inner {
+  display: block;
+  transform: translateY(120%);
+  will-change: transform;
+}
+
+/* Bio Contrast Sweep Blocks */
+.bio-wrapper {
+  position: relative;
+  display: block;
+}
+
+.bio-sweep-block {
+  position: absolute;
+  inset: -0.5rem; /* Ensure it covers text completely */
+  background-color: #ff6b35; /* Aggressive contrasting color (Neon Orange) */
+  z-index: 10;
+  transform-origin: left center;
+}
+
+.about-bio {
+  position: relative;
+  z-index: 1;
+}

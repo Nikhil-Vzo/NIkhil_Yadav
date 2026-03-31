@@ -16,3 +16,54 @@
     height: 200px;
   }
 }
+
+.bunny-speech-bubble {
+  position: absolute;
+  top: -20px;
+  right: -140px;
+  width: max-content;
+  max-width: 180px;
+  background-color: #050505;
+  border: 2px solid #00e5a0;
+  color: #00e5a0;
+  font-family: var(--font-code);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0.8rem;
+  opacity: 0;
+  transform: translateY(10px) scale(0.9);
+  pointer-events: none;
+  transition: opacity 0.3s ease-out, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 4px 4px 0 #ff6b35;
+  z-index: 10;
+}
+
+.bunny-speech-bubble.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.bunny-speech-bubble p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.speech-tail {
+  position: absolute;
+  bottom: -6px;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  background-color: #050505;
+  border-bottom: 2px solid #00e5a0;
+  border-left: 2px solid #00e5a0;
+  transform: rotate(-45deg);
+  box-shadow: -2px 2px 0 #ff6b35; /* Matching brutalist shadow */
+}
+
+@media (max-width: 768px) {
+  .bunny-speech-bubble {
+    right: -100px;
+    top: -40px;
+  }
+}
