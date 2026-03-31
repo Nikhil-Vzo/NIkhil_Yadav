@@ -9,7 +9,7 @@ const Hero = () => {
   const loaderRef = useRef(null);
   const lampRef = useRef(null);
   const targetIRef = useRef(null);
-  const charsRef = useRef([]);
+  const loaderContentRef = useRef(null);
 
   const nameTopRef = useRef(null);
   const nameBottomRef = useRef(null);
@@ -25,50 +25,85 @@ const Hero = () => {
     let hasRevealed = false;
     let sequenceFinished = false;
 
-    // The entire Pixar sequence is entirely CSS/GSAP (0 React re-renders = perfectly smooth on mobile)
-    const pixarTl = gsap.timeline({
-      onComplete: () => {
-        sequenceFinished = true;
-        tryFinishLoad();
-      }
-    });
+    const lamp = lampRef.current;
+    const targetI = targetIRef.current;
+    const content = loaderContentRef.current;
+    if (!lamp || !targetI || !content) return;
 
-    // To guarantee the lamp always lands perfectly on the 'I' regardless of screen size,
-    // we wrapped the Lamp and the 'I' in the same DOM container. The Lamp's 0,0 position is perfectly above the 'I'.
-    // We animate from negative X values to perfectly hit 0.
-    
-    // 1. Lamp drops in and hops
-    pixarTl.fromTo(lampRef.current, { xPercent: -500, yPercent: -300, rotation: -20 }, { xPercent: -350, yPercent: 0, rotation: 10, ease: 'bounce.out', duration: 0.8 })
-      // Hop 1
-      .to(lampRef.current, { xPercent: -250, yPercent: -100, ease: 'power2.out', duration: 0.3 })
-      .to(lampRef.current, { xPercent: -150, yPercent: 0, rotation: -10, ease: 'power2.in', duration: 0.25 })
-      // Hop 2
-      .to(lampRef.current, { xPercent: -80, yPercent: -150, ease: 'power2.out', duration: 0.3 })
-      .to(lampRef.current, { xPercent: -30, yPercent: 0, rotation: 5, ease: 'power2.in', duration: 0.25 })
-      // The Big Jump
-      .to(lampRef.current, { xPercent: -10, yPercent: -250, rotation: 40, ease: 'power3.out', duration: 0.5 })
-      // SQUASH the I!
-      .to(lampRef.current, { xPercent: 0, yPercent: 0, rotation: 0, ease: 'power4.in', duration: 0.35 })
-      .add('squash') // label for simultaneous actions
-      .to(targetIRef.current, { scaleY: 0.15, transformOrigin: 'bottom', ease: 'elastic.out(1, 0.3)', duration: 0.8 }, 'squash')
-      .to(lampRef.current, { scaleY: 0.5, scaleX: 1.2, transformOrigin: 'bottom', yPercent: 50, duration: 0.15 }, 'squash')
-      .to(lampRef.current, { scaleY: 1, scaleX: 1, yPercent: 0, ease: 'elastic.out(1, 0.5)', duration: 0.6 });
+    // Wait one frame for fonts + layout to settle, then compute pixel-perfect positions
+    requestAnimationFrame(() => {
+      const iRect = targetI.getBoundingClientRect();
+      const contentRect = content.getBoundingClientRect();
+      const lampH = lamp.offsetHeight;
+      const lampW = lamp.offsetWidth;
+
+      // Target position: directly above the 'I', aligned at its center
+      const targetX = iRect.left + iRect.width / 2 - contentRect.left - lampW / 2;
+      const targetY = iRect.top - contentRect.top - lampH * 0.85;
+
+      // Hop waypoints spread from far left to the I
+      const hopSpacing = lampW * 2.5;
+      const positions = [
+        { x: targetX - hopSpacing * 3, y: targetY },  // entry
+        { x: targetX - hopSpacing * 2, y: targetY },  // hop1 land
+        { x: targetX - hopSpacing * 1, y: targetY },  // hop2 land
+        { x: targetX, y: targetY },                     // final (on the I)
+      ];
+
+      // Hide lamp initially
+      gsap.set(lamp, { x: positions[0].x - 80, y: positions[0].y - 250, rotation: -30, opacity: 0 });
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          sequenceFinished = true;
+          tryFinishLoad();
+        }
+      });
+
+      // Appear + bounce land at position 0
+      tl.to(lamp, { opacity: 1, duration: 0.01 })
+        .to(lamp, { x: positions[0].x, y: positions[0].y, rotation: 5, ease: 'bounce.out', duration: 0.6 })
+        
+        // Hop 1: arc up then land
+        .to(lamp, { x: (positions[0].x + positions[1].x) / 2, y: positions[0].y - 60, rotation: -8, ease: 'power2.out', duration: 0.2 })
+        .to(lamp, { x: positions[1].x, y: positions[1].y, rotation: 5, ease: 'power2.in', duration: 0.18 })
+        
+        // Hop 2: arc up then land
+        .to(lamp, { x: (positions[1].x + positions[2].x) / 2, y: positions[1].y - 70, rotation: -5, ease: 'power2.out', duration: 0.2 })
+        .to(lamp, { x: positions[2].x, y: positions[2].y, rotation: 3, ease: 'power2.in', duration: 0.18 })
+        
+        // THE BIG JUMP: massive arc, head tilts forward aggressively
+        .to(lamp, { x: (positions[2].x + positions[3].x) / 2, y: positions[2].y - 180, rotation: 25, scale: 1.15, ease: 'power3.out', duration: 0.35 })
+        
+        // SLAM DOWN onto the I
+        .to(lamp, { x: positions[3].x, y: positions[3].y + 15, rotation: 0, scale: 1, ease: 'power4.in', duration: 0.25 })
+        
+        // IMPACT: squash the I and compress the lamp
+        .add('impact')
+        .to(targetI, { scaleY: 0.12, transformOrigin: 'bottom center', duration: 0.08, ease: 'power4.in' }, 'impact')
+        .to(lamp, { scaleY: 0.65, scaleX: 1.25, transformOrigin: 'bottom center', duration: 0.08 }, 'impact')
+        
+        // Lamp rebounds upward slightly
+        .to(lamp, { scaleY: 1.08, scaleX: 0.95, y: positions[3].y - 8, ease: 'power2.out', duration: 0.12 })
+        .to(lamp, { scaleY: 1, scaleX: 1, y: positions[3].y, ease: 'elastic.out(1, 0.4)', duration: 0.5 })
+        
+        // Hold for dramatic beat
+        .to({}, { duration: 0.5 });
+    });
 
     const runReveal = () => {
       if (hasRevealed) return;
       hasRevealed = true;
 
-      // Hide loader explosively
-      gsap.to('.pixar-loader-content', { scale: 1.5, opacity: 0, duration: 0.6, ease: 'power3.in' });
+      gsap.to(loaderContentRef.current, { scale: 1.3, opacity: 0, duration: 0.5, ease: 'power3.in' });
       gsap.to(loaderRef.current, { 
         height: 0, 
         duration: 1.2, 
         ease: 'power4.inOut', 
-        delay: 0.4,
+        delay: 0.3,
         onComplete: () => setLoading(false)
       });
 
-      // Enter Hero typography sequence
       const tl = gsap.timeline({ delay: 1.0 });
       if (window.innerWidth >= 768) {
         tl.fromTo(vertAxisRef.current, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 1, ease: 'power3.out' })
@@ -99,13 +134,12 @@ const Hero = () => {
       isWindowLoaded = true;
       isBunnyLoaded = true;
       tryFinishLoad();
-    }, 4500);
+    }, 5000);
 
     return () => {
       clearTimeout(fallbackTimeout);
       window.removeEventListener('load', handleWindowLoad);
       window.removeEventListener('bunnyLoaded', handleBunnyLoad);
-      pixarTl.kill();
     };
   }, []);
 
@@ -129,15 +163,11 @@ const Hero = () => {
       
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
-      
-      // Calculate normalized offset from center (-1 to 1)
       const xOffset = (clientX - centerX) / centerX;
       const yOffset = (clientY - centerY) / centerY;
 
-      // Subtle parallax pushes (opposites for top/bottom to create torsion)
       xToTop(xOffset * -20);
       yToTop(yOffset * -10);
-      
       xToBottom(xOffset * 30);
       yToBottom(yOffset * 15);
     };
@@ -158,27 +188,25 @@ const Hero = () => {
         ref={loaderRef}
         style={{ pointerEvents: loading ? 'auto' : 'none' }}
       >
-        <div className="pixar-loader-content">
-          <div className="loader-lamp" ref={lampRef}></div>
-          <div className="pixar-word">
-            <span className="p-char" ref={el => charsRef.current[0] = el}>N</span>
-            <span className="p-char" ref={el => charsRef.current[1] = el}>I</span>
-            <span className="p-char" ref={el => charsRef.current[2] = el}>K</span>
-            <span className="p-char" ref={el => charsRef.current[3] = el}>H</span>
-            <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-              <div className="loader-lamp" ref={lampRef}>
-                {/* SVG classic articulated desk lamp */}
-                <svg viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
-                  <path d="M7 21h10v2H7z" />
-                  <path d="M11 21v-5l-3-6-3-2 1-2 2-1 4 3 2 6v7h-2z" />
-                  <path d="M12 9A4 4 0 1 0 7 2l2 2a2 2 0 1 1 3 3l-1 1z" />
-                </svg>
-              </div>
-              <span className="p-char target-i" ref={targetIRef}>I</span>
+        <div className="pixar-loader-content" ref={loaderContentRef}>
+          {/* The Luxo Jr. Lamp — built entirely with CSS */}
+          <div className="luxo-lamp" ref={lampRef}>
+            <div className="luxo-head">
+              <div className="luxo-beam"></div>
             </div>
-            <span className="p-char" ref={el => charsRef.current[4] = el}>L</span>
+            <div className="luxo-arm"></div>
+            <div className="luxo-base"></div>
           </div>
+
           <div className="pixar-word">
+            <span className="p-char">N</span>
+            <span className="p-char">I</span>
+            <span className="p-char">K</span>
+            <span className="p-char">H</span>
+            <span className="p-char target-i" ref={targetIRef}>I</span>
+            <span className="p-char">L</span>
+          </div>
+          <div className="pixar-word pixar-word-bottom">
             <span className="p-char">Y</span>
             <span className="p-char">A</span>
             <span className="p-char">D</span>
