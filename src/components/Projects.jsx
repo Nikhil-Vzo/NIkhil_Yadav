@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import useInView from '../hooks/useInView';
 import './Projects.css';
 
-const projects = [
+export const projects = [
   {
     id: 'other-half',
     number: '01',
