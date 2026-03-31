@@ -40,6 +40,37 @@ class UI_SFX {
     osc.stop(ctx.currentTime + 0.15);
   }
 
+  unlock = () => {
+    try {
+      this.init();
+      // Play a silent oscillator to force the hardware to unlock the audio context completely
+      const osc = this.audioCtx.createOscillator();
+      const gainNode = this.audioCtx.createGain();
+      gainNode.gain.value = 0; // Silent
+      osc.connect(gainNode);
+      gainNode.connect(this.audioCtx.destination);
+      osc.start(0);
+      osc.stop(this.audioCtx.currentTime + 0.01);
+      
+      this.unlocked = true;
+
+      // Remove listeners once successfully unlocked
+      window.removeEventListener('click', this.unlock);
+      window.removeEventListener('touchstart', this.unlock);
+      window.removeEventListener('keydown', this.unlock);
+    } catch (e) {
+      console.warn('Audio Context unlocking failed: ', e);
+    }
+  }
+
+  setupUnlockListeners() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('click', this.unlock, { once: true });
+      window.addEventListener('touchstart', this.unlock, { once: true });
+      window.addEventListener('keydown', this.unlock, { once: true });
+    }
+  }
+
   playTypewriter() {
     this.init();
     const ctx = this.audioCtx;
@@ -63,4 +94,7 @@ class UI_SFX {
   }
 }
 
-export const sfx = new UI_SFX();
+// Automatically create and setup the utility singleton
+const sfxInstance = new UI_SFX();
+sfxInstance.setupUnlockListeners();
+export const sfx = sfxInstance;
