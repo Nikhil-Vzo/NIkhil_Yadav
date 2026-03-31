@@ -162,7 +162,7 @@ const Hero = () => {
         <div className="hero-typography">
           <div className="hero-attention-text mobile-extra-anim">
             <h3 className="attention-txt">
-              CRAFTING <span className="diff-typo">exceptional</span> EXPERIENCES
+              <span className="diff-typo">MY</span> SITE SCREAMS <span className="diff-typo">ATTENTION</span>
             </h3>
           </div>
 
