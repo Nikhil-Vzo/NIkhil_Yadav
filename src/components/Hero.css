@@ -368,8 +368,9 @@
     height: 120px;
     margin: 0 auto;
     font-size: 0.75rem;
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* Reapply venom animation */
-    animation: liquidVenom 5s ease-in-out infinite alternate, sheenFlow 6s linear infinite;
+    /* Remove heavy fluid border animation to rescue mobile performance, keep only glossy sheen */
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    animation: sheenFlow 6s linear infinite;
   }
   .desk-only {
     display: none;
@@ -391,6 +392,14 @@
     padding: 0.5rem 1.2rem;
     line-height: 1.4;
     text-align: center;
+    /* Performance Fix: Static max shadow to prevent mobile layout recalculation thrashing during float */
+    box-shadow: -2px 2px 0 0 #050505, -4px 4px 0 0 #050505, -6px 6px 0 0 #ff6b35, -8px 8px 0 0 #ff6b35;
+    animation: smooth-mobile-float 3s infinite alternate ease-in-out;
+  }
+
+  @keyframes smooth-mobile-float {
+    0% { transform: translate(4px, -4px); }
+    100% { transform: translate(10px, -10px); }
   }
   
   .diff-typo {
