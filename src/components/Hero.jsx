@@ -161,9 +161,9 @@ const Hero = () => {
 
         <div className="hero-typography">
           <div className="hero-attention-text mobile-extra-anim">
-            <p className="attention-txt">
-              <span className="diff-typo">MY</span> SITE SCREAMS <span className="diff-typo">ATTENTION</span>
-            </p>
+            <h3 className="attention-txt">
+              CRAFTING <span className="diff-typo">exceptional</span> EXPERIENCES
+            </h3>
           </div>
 
           <div className="parallax-inner" ref={parallaxTopRef}>

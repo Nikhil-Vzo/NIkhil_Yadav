@@ -22,46 +22,38 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   padding: 0 1rem;
   z-index: 20;
 }
 
 .attention-txt {
   font-family: var(--font-primary, sans-serif);
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  font-weight: 800;
+  font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+  font-weight: 400;
   text-transform: uppercase;
-  color: #050505;
-  background-color: #00e5a0;
-  padding: 0.5rem 1.5rem;
+  color: rgba(242, 240, 235, 0.85); /* Slightly muted text */
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  padding: 0.6rem 2rem;
   display: inline-block;
-  letter-spacing: 0.05em;
-  border: 1px solid #00e5a0;
-  animation: brutalist-snap 4s infinite;
+  letter-spacing: 0.25em;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
 .diff-typo {
-  font-family: "Playfair Display", "Times New Roman", Times, serif;
+  font-family: "Playfair Display", var(--font-serif), serif;
   font-style: italic;
-  font-weight: normal;
-  color: #ff6b35;
+  font-weight: 400;
+  color: #ff6b35; /* Keeps the cinematic orange accent */
   background-color: transparent;
-  padding: 0 0.2rem;
+  padding: 0 0.5rem;
   margin: 0;
   text-transform: lowercase;
-  border-radius: 0;
-}
-
-@keyframes brutalist-snap {
-  0%, 85% { 
-    box-shadow: -6px 6px 0px #ff6b35; 
-    transform: translate(6px, -6px); 
-  }
-  90%, 100% { 
-    box-shadow: 0px 0px 0px #ff6b35; 
-    transform: translate(0px, 0px); 
-  }
+  letter-spacing: 0.05em;
 }
 
 /* -----------------------------
@@ -324,30 +316,16 @@
   }
   
   .attention-txt {
-    font-family: var(--font-primary, sans-serif);
-    font-size: clamp(1.5rem, 8vw, 2.5rem);
-    font-weight: 900;
-    background-color: transparent;
-    color: #ff6b35; /* Loud neon orange text instead of a box */
-    padding: 0;
-    border: none;
-    box-shadow: none;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
+    font-size: clamp(0.65rem, 3vw, 0.85rem);
+    letter-spacing: 0.15em;
+    padding: 0.5rem 1.2rem;
+    line-height: 1.4;
     text-align: center;
-    animation: none; /* Remove brutalist snap for a cleaner look */
   }
   
   .diff-typo {
-    font-family: "Playfair Display", "Times New Roman", Times, serif;
-    font-style: italic;
-    color: #00e5a0;
-    font-weight: normal;
-    -webkit-text-stroke: 0;
-    background-color: transparent;
-    padding: 0;
-    margin: 0;
-    text-transform: lowercase;
+    font-size: 1.1em;
+    padding: 0 0.3rem;
   }
 
   /* Terminal Feed At Bottom */
