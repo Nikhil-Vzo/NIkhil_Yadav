@@ -1,4 +1,5 @@
-Portfolio: Nikhil Yadav
+Portfolio: Nikhil Yadav </br>
+
 Hey! I'm Nikhil, a Full-Stack Developer and CS student at Amity University. I like building things that actually get used—whether it's a campus dating app or management systems . I'm mostly into the MERN stack, but I love playing around with 3D web stuff and smooth animations.
 
 🚀 Projects I've Worked On
