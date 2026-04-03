@@ -1,21 +1,44 @@
-Portfolio: Nikhil Yadav </br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikhil Yadav | Portfolio README</title>
+</head>
+<body>
 
-Hey! I'm Nikhil, a Full-Stack Developer and CS student at Amity University. I like building things that actually get used—whether it's a campus dating app or management systems . I'm mostly into the MERN stack, but I love playing around with 3D web stuff and smooth animations.
+    <h1>Portfolio: Nikhil Yadav</h1>
 
-🚀 Projects I've Worked On
-Other Half: A social platform for students. It’s reached 400+ users across 7 countries and has seen over 50k interactions.
+    <p>
+        Hey! I'm Nikhil, a Full-Stack Developer and CS student at Amity University. 
+        I like building things that actually get used—whether it's a campus dating app or management systems. 
+        I'm mostly into the MERN stack, but I love playing around with 3D web stuff and smooth animations.
+    </p>
 
-TEDx Amity University: Built the official site and a custom ticketing system that handled ₹40k+ in revenue with zero fails.
 
-Guidely: A career guidance tool I built for the Smart India Hackathon 2025 .
 
-Fest Platform: A booking system with real-time QR scanning and automated ticket emails.
+    <h2>📂 Quick Start</h2>
+    <p>If you want to use it as your template do this:</p>
+    <pre><code>
+# Clone it
+git clone https://github.com/Nikhil-Vzo/portfolio_new.git
 
-🛠 My Toolkit
-Frontend: React, Next.js, TypeScript, Tailwind, and GSAP for those smooth scrolls.
+# Install the goods
+npm install
 
-Backend: Node.js, Express, and Deno Edge Functions.
+# Get it running
+npm run dev
+    </code></pre>
 
-Database: PostgreSQL, MongoDB, and Supabase.
+    <h2>📫 Get in Touch</h2>
+    <p>
+        If you want to chat about a project or just say hi:
+    </p>
+    <ul>
+        <li><strong>LinkedIn</strong>: <a href="https://www.linkedin.com/in/nikhil1yadav/">nikhil1yadav</a></li>
+        <li><strong>GitHub</strong>: <a href="https://github.com/Nikhil-Vzo">Nikhil-Vzo</a></li>
+        <li><strong>Live Site</strong>: <a href="https://portfolio-87o6g7bkx-nikhils-projects-bc11754d.vercel.app/">nikhilyadav.in</a></li>
+    </ul>
 
-Other stuff: Java, Python, Docker, and Figma.
+</body>
+</html>
