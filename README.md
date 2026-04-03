@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nikhil Yadav | Portfolio README</title>
-</head>
-<body>
+
 
     <h1>Portfolio: Nikhil Yadav</h1>
 
@@ -40,5 +33,4 @@ npm run dev
         <li><strong>Live Site</strong>: <a href="https://portfolio-87o6g7bkx-nikhils-projects-bc11754d.vercel.app/">nikhilyadav.in</a></li>
     </ul>
 
-</body>
-</html>
+
